@@ -1,10 +1,12 @@
 import type { MetadataRoute } from "next";
 import urlJoin from "url-join";
 import { config } from "@/config";
-import { wisp } from "@/lib/wisp";
+// import { wisp } from "@/lib/wisp";
+
+import result from '../tags.json'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const result = await wisp.getTags();
+  // const result = await wisp.getTags();
   return [
     {
       url: urlJoin(config.baseUrl, "tag"),

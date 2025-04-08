@@ -65,7 +65,7 @@ export function CommentForm({ slug, config, onSuccess }: CommentFormProps) {
   const { mutateAsync: createComment, data } = useMutation({
     mutationFn: async (input: CreateCommentRequest) => {
       try {
-        return await wisp.createComment(input);
+        // return await wisp.createComment(input);
       } catch (e) {
         if (e instanceof AxiosError) {
           const errorData = e.response?.data as ErrorResponse | undefined;
@@ -229,9 +229,9 @@ export function CommentForm({ slug, config, onSuccess }: CommentFormProps) {
         )}
 
         <div className="flex items-center justify-between pt-2">
-          <Button type="submit" disabled={form.formState.isSubmitting}>
+          {/* <Button type="submit" disabled={form.formState.isSubmitting}>
             Post Comment
-          </Button>
+          </Button> */}
         </div>
       </form>
     </Form>

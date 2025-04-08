@@ -1,0 +1,137 @@
+{
+    "tags": [
+      {
+        "id": "clvlz2qio00039miv7wxicdov",
+        "name": "bali",
+        "description": null,
+        "teamId": "clvlugru90000o4g8ahxp069s"
+      },
+      {
+        "id": "clvm6hxsj0001c7p8jjfs9cw1",
+        "name": "bhutan",
+        "description": null,
+        "teamId": "clvlugru90000o4g8ahxp069s"
+      },
+      {
+        "id": "clvlzm641000w9mivk0omp3n4",
+        "name": "budget",
+        "description": null,
+        "teamId": "clvlugru90000o4g8ahxp069s"
+      },
+      {
+        "id": "clvm0efpw000qnrohdvzfo1ep",
+        "name": "emotions",
+        "description": null,
+        "teamId": "clvlugru90000o4g8ahxp069s"
+      },
+      {
+        "id": "clvlze80o000i9mivfb2bxwvq",
+        "name": "fear",
+        "description": null,
+        "teamId": "clvlugru90000o4g8ahxp069s"
+      },
+      {
+        "id": "clvm045kz0009nrohcjepy9rz",
+        "name": "hiking",
+        "description": null,
+        "teamId": "clvlugru90000o4g8ahxp069s"
+      },
+      {
+        "id": "clvlzmh13000y9miv0a9i1jzg",
+        "name": "itinerary",
+        "description": null,
+        "teamId": "clvlugru90000o4g8ahxp069s"
+      },
+      {
+        "id": "clvlzwydw001d9mivofqj2tvh",
+        "name": "japan",
+        "description": null,
+        "teamId": "clvlugru90000o4g8ahxp069s"
+      },
+      {
+        "id": "clvlzebm1000k9mivcquzvo2x",
+        "name": "language",
+        "description": null,
+        "teamId": "clvlugru90000o4g8ahxp069s"
+      },
+      {
+        "id": "clvm107u1000111s4y7l5x01i",
+        "name": "malaysia",
+        "description": null,
+        "teamId": "clvlugru90000o4g8ahxp069s"
+      },
+      {
+        "id": "clvm048e2000bnrohusm881go",
+        "name": "nepal",
+        "description": null,
+        "teamId": "clvlugru90000o4g8ahxp069s"
+      },
+      {
+        "id": "clz11j9420007aoal1izprmvs",
+        "name": "new-tags",
+        "description": null,
+        "teamId": "clvlugru90000o4g8ahxp069s"
+      },
+      {
+        "id": "clvlz9gpo00099mivs9f53jls",
+        "name": "packing",
+        "description": null,
+        "teamId": "clvlugru90000o4g8ahxp069s"
+      },
+      {
+        "id": "clz12nnr0000a2jtaqjlhy44g",
+        "name": "sample",
+        "description": null,
+        "teamId": "clvlugru90000o4g8ahxp069s"
+      },
+      {
+        "id": "clvlzqp3x00159mivpw8zu2my",
+        "name": "stories",
+        "description": null,
+        "teamId": "clvlugru90000o4g8ahxp069s"
+      },
+      {
+        "id": "clvm0imtb000xnrohb62q7u86",
+        "name": "thailand",
+        "description": null,
+        "teamId": "clvlugru90000o4g8ahxp069s"
+      },
+      {
+        "id": "clvlz9m1x000b9miv8h63omdf",
+        "name": "tips-and-tricks",
+        "description": null,
+        "teamId": "clvlugru90000o4g8ahxp069s"
+      },
+      {
+        "id": "clvlz2o1700019mivnrl95fys",
+        "name": "travel",
+        "description": null,
+        "teamId": "clvlugru90000o4g8ahxp069s"
+      },
+      {
+        "id": "clvm00kdg0003nrohzxm0puik",
+        "name": "vietnam",
+        "description": null,
+        "teamId": "clvlugru90000o4g8ahxp069s"
+      },
+      {
+        "id": "clvm0vtl6001enrohni16i02i",
+        "name": "waterfall",
+        "description": null,
+        "teamId": "clvlugru90000o4g8ahxp069s"
+      },
+      {
+        "id": "clvm09xl8000inrohg3mwdpy0",
+        "name": "working",
+        "description": null,
+        "teamId": "clvlugru90000o4g8ahxp069s"
+      }
+    ],
+    "pagination": {
+      "page": 1,
+      "totalPages": 1,
+      "totalTags": 21,
+      "nextPage": null,
+      "prevPage": null
+    }
+  }

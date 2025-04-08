@@ -2,8 +2,11 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { config } from "@/config";
 import { signOgImageUrl } from "@/lib/og-image";
-import { wisp } from "@/lib/wisp";
 import Link from "next/link";
+
+// import { wisp } from "@/lib/wisp";
+
+import result from '../tags.json'
 
 export async function generateMetadata() {
   return {
@@ -23,7 +26,9 @@ export async function generateMetadata() {
 }
 
 export default async function Page() {
-  const result = await wisp.getTags();
+  // const result = await wisp.getTags();
+
+  console.log('RESULT:', JSON.stringify(result, null, 2));
 
   return (
     <div className="container mx-auto px-5">

@@ -5,16 +5,25 @@ import { Header } from "@/components/Header";
 import { RelatedPosts } from "@/components/RelatedPosts";
 import { config } from "@/config";
 import { signOgImageUrl } from "@/lib/og-image";
-import { wisp } from "@/lib/wisp";
 import { notFound } from "next/navigation";
 import type { BlogPosting, WithContext } from "schema-dts";
+
+// import { wisp } from "@/lib/wisp";
+
+import posts from "../../posts.json";
+import { GetPostResult } from "@wisp-cms/client";
+
 
 export async function generateMetadata(props: { params: Promise<Params> }) {
   const params = await props.params;
 
+  const result = {post: {title: '', description: '', image: ''}};
+  
   const { slug } = params;
+  
+  result.post = posts.posts.filter((post) => post.slug === slug)[0]
 
-  const result = await wisp.getPost(slug);
+  // const result = await wisp.getPost(slug);
   if (!result || !result.post) {
     return {
       title: "Blog post not found",
@@ -43,14 +52,21 @@ const Page = async (props: { params: Promise<Params> }) => {
 
   const { slug } = params;
 
-  const result = await wisp.getPost(slug);
-  const { posts } = await wisp.getRelatedPosts({ slug, limit: 3 });
+  // const result = await wisp.getPost(slug);
+  // const { posts } = await wisp.getRelatedPosts({ slug, limit: 3 });
+
+  const result = {
+    post: {} as GetPostResult['post']
+  }
+
+  result.post = posts.posts.filter((post) => post.slug === slug)[0]
+
 
   if (!result || !result.post) {
     return notFound();
   }
 
-  const { title, publishedAt, updatedAt, image, author } = result.post;
+  const { title, publishedAt, updatedAt, image, author, content } = result.post;
 
   const jsonLd: WithContext<BlogPosting> = {
     "@context": "https://schema.org",
@@ -76,7 +92,7 @@ const Page = async (props: { params: Promise<Params> }) => {
         <Header />
         <div className="max-w-prose mx-auto text-xl">
           <BlogPostContent post={result.post} />
-          <RelatedPosts posts={posts} />
+          <RelatedPosts posts={posts.posts.slice(0, 3)} />
           <CommentSection slug={slug} />
         </div>
         <Footer />
