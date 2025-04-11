@@ -8,7 +8,7 @@ import { signOgImageUrl } from "@/lib/og-image";
 import { notFound } from "next/navigation";
 import type { BlogPosting, WithContext } from "schema-dts";
 
-// import { wisp } from "@/lib/wisp";
+import { wisp } from "@/lib/wisp";
 
 import posts from "../../posts.json";
 import { GetPostResult } from "@wisp-cms/client";
@@ -43,6 +43,7 @@ export async function generateMetadata(props: { params: Promise<Params> }) {
     },
   };
 }
+
 interface Params {
   slug: string;
 }
@@ -52,15 +53,17 @@ const Page = async (props: { params: Promise<Params> }) => {
 
   const { slug } = params;
 
-  // const result = await wisp.getPost(slug);
+  const result = await wisp.getPost(slug);
   // const { posts } = await wisp.getRelatedPosts({ slug, limit: 3 });
 
-  const result = {
-    post: {} as GetPostResult['post']
-  }
+  // const result = {
+  //   post: {} as GetPostResult['post']
+  // }
 
-  result.post = posts.posts.filter((post) => post.slug === slug)[0]
+  // result.post = posts.posts.filter((post) => post.slug === slug)[0]
 
+
+  console.log("RESULT:", result)
 
   if (!result || !result.post) {
     return notFound();
@@ -92,7 +95,7 @@ const Page = async (props: { params: Promise<Params> }) => {
         <Header />
         <div className="max-w-prose mx-auto text-xl">
           <BlogPostContent post={result.post} />
-          <RelatedPosts posts={posts.posts.slice(0, 3)} />
+          {/* <RelatedPosts posts={posts.posts.slice(0, 3)} /> */}
           <CommentSection slug={slug} />
         </div>
         <Footer />

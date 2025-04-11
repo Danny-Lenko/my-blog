@@ -1,10 +1,10 @@
+import axios from "axios";
 import { BlogPostsPreview } from "@/components/BlogPostPreview";
 import { BlogPostsPagination } from "@/components/BlogPostsPagination";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { buildStrapiQuery } from "@/lib/cmsQueryBuilder";
 // import { wisp } from "@/lib/wisp";
-
-import result from "./posts.json";
 
 const Page = async (
   props: {
@@ -12,16 +12,35 @@ const Page = async (
   }
 ) => {
   const searchParams = await props.searchParams;
-  const page = searchParams.page ? parseInt(searchParams.page as string) : 1;
-  // const result = await wisp.getPosts({ limit: 6, page });
+  const queryString = buildStrapiQuery(
+    {
+      sort: 'publishedAt:asc',
+      pagination: {pageSize: 6},
+      populate: {
+        author: {
+          fields: ['name', 'image'],
+        },
+        tags: {
+          fields: ['id', 'name'],
+        },
+      },
+    },
+    searchParams
+  );
 
-  // console.log('RESULT:', JSON.stringify(result, null, 2));
+  const result = await axios.get(`${process.env.API_HOST}/api/articles?${queryString}`)
+
+    // const wispPosts = await wisp.getPosts();
+  
+    // console.log('POSTS:', JSON.stringify(wispPosts, null, 2));
+
+  // console.log('RESULT:', result.data.meta.pagination)
 
   return (
     <div className="container mx-auto px-5 mb-10">
-      <Header />
-      <BlogPostsPreview posts={result.posts} />
-      <BlogPostsPagination pagination={result.pagination} />
+      <Header />      
+      <BlogPostsPreview posts={result.data.data} />
+      <BlogPostsPagination pagination={result.data.meta.pagination} />
       <Footer />
     </div>
   );

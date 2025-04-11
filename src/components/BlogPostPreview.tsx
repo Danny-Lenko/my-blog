@@ -47,6 +47,9 @@ export const BlogPostsPreview: FunctionComponent<{
   posts: GetPostsResult["posts"];
   className?: string;
 }> = ({ posts, className }) => {
+
+  console.log("POSTS:", posts)
+
   return (
     <div
       className={cn(

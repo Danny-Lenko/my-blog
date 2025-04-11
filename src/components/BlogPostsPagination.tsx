@@ -7,22 +7,21 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { mapCmsPagination } from "@/lib/mapCmsPagination";
 
 export const BlogPostsPagination = ({
-  pagination,
+  pagination: rearPagination,
   basePath = "/?page=",
   numSiblingPages = 2,
 }: {
   basePath?: string;
   numSiblingPages?: number;
-  pagination: {
-    page: number;
-    limit: number | "all";
-    totalPages: number;
-    nextPage: number | null;
-    prevPage: number | null;
-  };
-}) => {
+  pagination: { page: number; pageSize: number; pageCount: number; total: number; }}) => {
+
+  // console.log("PAGINATION:", pagination)
+
+  const pagination = mapCmsPagination(rearPagination)
+
   return (
     <Pagination>
       <PaginationContent>
