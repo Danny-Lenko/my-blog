@@ -4,7 +4,6 @@ import { BlogPostsPagination } from "@/components/BlogPostsPagination";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { buildStrapiQuery } from "@/lib/cmsQueryBuilder";
-// import { wisp } from "@/lib/wisp";
 
 const Page = async (
   props: {
@@ -14,7 +13,7 @@ const Page = async (
   const searchParams = await props.searchParams;
   const queryString = buildStrapiQuery(
     {
-      sort: 'publishedAt:asc',
+      sort: 'createdAt:asc',
       pagination: {pageSize: 6},
       populate: {
         author: {
@@ -29,12 +28,6 @@ const Page = async (
   );
 
   const result = await axios.get(`${process.env.API_HOST}/api/articles?${queryString}`)
-
-    // const wispPosts = await wisp.getPosts();
-  
-    // console.log('POSTS:', JSON.stringify(wispPosts, null, 2));
-
-  // console.log('RESULT:', result.data.meta.pagination)
 
   return (
     <div className="container mx-auto px-5 mb-10">

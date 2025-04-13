@@ -3,7 +3,8 @@ import { BlogPostsPagination } from "@/components/BlogPostsPagination";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Badge } from "@/components/ui/badge";
-import { wisp } from "@/lib/wisp";
+import { buildStrapiQuery } from "@/lib/cmsQueryBuilder";
+import axios from "axios";
 import { CircleX } from "lucide-react";
 import Link from "next/link";
 
@@ -42,7 +43,31 @@ const Page = async (
   } = params;
 
   const page = searchParams.page ? parseInt(searchParams.page as string) : 1;
-  const result = await wisp.getPosts({ limit: 6, tags: [slug], page });
+
+  const queryString = buildStrapiQuery(
+    {
+      filters: {
+        tags: {
+          name: {
+            $eq: slug
+          },
+        },
+      },
+      sort: 'publishedAt:asc',
+      pagination: {pageSize: 6, page},
+      populate: {
+        author: {
+          fields: ['name', 'image'],
+        },
+        tags: {
+          fields: ['name'],
+        },
+      }
+    }
+  );
+
+  const posts = await axios.get(`${process.env.API_HOST}/api/articles?${queryString}`)
+
   return (
     <div className="container mx-auto px-5 mb-10">
       <Header />
@@ -52,9 +77,9 @@ const Page = async (
           Posts tagged with <strong className="mx-2">#{slug}</strong>{" "}
         </Badge>
       </Link>
-      <BlogPostsPreview posts={result.posts} />
+      <BlogPostsPreview posts={posts.data.data} />
       <BlogPostsPagination
-        pagination={result.pagination}
+        pagination={posts.data.meta.pagination}
         basePath={`/tag/${slug}/?page=`}
       />
       <Footer />

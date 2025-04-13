@@ -1,3 +1,5 @@
+import { notFound } from "next/navigation";
+import axios from "axios";
 import { BlogPostContent } from "@/components/BlogPostContent";
 import { CommentSection } from "@/components/CommentSection";
 import { Footer } from "@/components/Footer";
@@ -5,25 +7,24 @@ import { Header } from "@/components/Header";
 import { RelatedPosts } from "@/components/RelatedPosts";
 import { config } from "@/config";
 import { signOgImageUrl } from "@/lib/og-image";
-import { notFound } from "next/navigation";
-import type { BlogPosting, WithContext } from "schema-dts";
-
-import { wisp } from "@/lib/wisp";
-
-import posts from "../../posts.json";
-import { GetPostResult } from "@wisp-cms/client";
+import { buildStrapiQuery } from "@/lib/cmsQueryBuilder";
 
 
 export async function generateMetadata(props: { params: Promise<Params> }) {
   const params = await props.params;
-
-  const result = {post: {title: '', description: '', image: ''}};
-  
+ 
   const { slug } = params;
   
-  result.post = posts.posts.filter((post) => post.slug === slug)[0]
+  const res = await axios.get(
+    `${process.env.API_HOST}/api/articles?filters[slug][$eq]=${slug}&populate=*`
+  );
 
-  // const result = await wisp.getPost(slug);
+  const result = res.data.data?.[0];
+
+  if (!res || !result) {
+    return notFound();
+  }
+  
   if (!result || !result.post) {
     return {
       title: "Blog post not found",
@@ -53,29 +54,28 @@ const Page = async (props: { params: Promise<Params> }) => {
 
   const { slug } = params;
 
-  const result = await wisp.getPost(slug);
-  // const { posts } = await wisp.getRelatedPosts({ slug, limit: 3 });
+  const res = await axios.get(
+    `${process.env.API_HOST}/api/articles?filters[slug][$eq]=${slug}&populate=*`
+  );
+  
+  const result = res.data.data?.[0];
 
-  // const result = {
-  //   post: {} as GetPostResult['post']
-  // }
-
-  // result.post = posts.posts.filter((post) => post.slug === slug)[0]
-
-
-  console.log("RESULT:", result)
-
-  if (!result || !result.post) {
+  if (!res || !result) {
     return notFound();
   }
 
-  const { title, publishedAt, updatedAt, image, author, content } = result.post;
+  const { title, description, publishedAt, updatedAt, image, author, content } = result;
 
-  const jsonLd: WithContext<BlogPosting> = {
+  const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      // "@id": `${config.siteUrl}/blog/${slug}` ADD A PROD HOST URL
+    },
     headline: title,
-    image: image ? image : undefined,
+    image: image ?? undefined,
+    "description": description ?? "", // якщо є опис
     datePublished: publishedAt ? publishedAt.toString() : undefined,
     dateModified: updatedAt.toString(),
     author: {
@@ -84,6 +84,23 @@ const Page = async (props: { params: Promise<Params> }) => {
       image: author.image ?? undefined,
     },
   };
+
+  const queryString = buildStrapiQuery(
+    {
+      sort: 'publishedAt:asc',
+      pagination: {pageSize: 3},
+      populate: {
+        author: {
+          fields: ['name', 'image'],
+        },
+        tags: {
+          fields: ['name'],
+        },
+      },
+    }
+  );
+
+  const posts = await axios.get(`${process.env.API_HOST}/api/articles?${queryString}`)
 
   return (
     <>
@@ -94,8 +111,8 @@ const Page = async (props: { params: Promise<Params> }) => {
       <div className="container mx-auto px-5">
         <Header />
         <div className="max-w-prose mx-auto text-xl">
-          <BlogPostContent post={result.post} />
-          {/* <RelatedPosts posts={posts.posts.slice(0, 3)} /> */}
+          <BlogPostContent post={result} />
+          <RelatedPosts posts={posts.data.data} />
           <CommentSection slug={slug} />
         </div>
         <Footer />

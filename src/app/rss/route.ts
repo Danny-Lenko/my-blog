@@ -1,19 +1,26 @@
 export const revalidate = 3600; // 1 hour
 
+import axios from "axios";
 import { NextResponse } from "next/server";
 import RSS from "rss";
 import urlJoin from "url-join";
-// import { wisp } from "../../lib/wisp";
 import { config } from "@/config";
 
-import result from '../posts.json'
+import { buildStrapiQuery } from "@/lib/cmsQueryBuilder";
 
 const baseUrl = config.baseUrl;
 
 export async function GET() {
-  // const result = await wisp.getPosts({ limit: 20 });
+  const queryString = buildStrapiQuery(
+    {
+      sort: 'publishedAt:desc',
+      pagination: {pageSize: 20},
+    }
+  );
 
-  const posts = result.posts.map((post) => {
+  const res = await axios.get(`${process.env.API_HOST}/api/articles?${queryString}`)
+
+  const posts = res.data.data.map((post: { title: string; description: string; slug: string; publishedAt: string; }) => {
     return {
       title: post.title,
       description: post.description || "",
@@ -29,7 +36,7 @@ export async function GET() {
     feed_url: urlJoin(baseUrl, "/rss"),
     pubDate: new Date(),
   });
-  posts.forEach((post) => {
+  posts.forEach((post: RSS.ItemOptions) => {
     feed.item(post);
   });
 

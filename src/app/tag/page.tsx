@@ -2,11 +2,8 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { config } from "@/config";
 import { signOgImageUrl } from "@/lib/og-image";
+import axios from "axios";
 import Link from "next/link";
-
-// import { wisp } from "@/lib/wisp";
-
-import result from '../tags.json'
 
 export async function generateMetadata() {
   return {
@@ -26,10 +23,8 @@ export async function generateMetadata() {
 }
 
 export default async function Page() {
-  // const result = await wisp.getTags();
-
-  console.log('RESULT:', JSON.stringify(result, null, 2));
-
+  const result = await (await axios.get(`${process.env.API_HOST}/api/tags`)).data.data;
+  
   return (
     <div className="container mx-auto px-5">
       <Header />
@@ -38,7 +33,7 @@ export default async function Page() {
         <p className="text-lg opacity-50">List of all tags</p>
       </div>
       <div className="my-10 max-w-6xl text-balance text-center text-xl mb-48">
-        {result.tags.map((tag) => (
+        {result.map((tag: { id: string; name: string }) => (
           <Link
             key={tag.id}
             href={`/tag/${tag.name}`}

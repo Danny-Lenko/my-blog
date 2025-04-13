@@ -1,19 +1,18 @@
+import axios from "axios";
 import type { MetadataRoute } from "next";
 import urlJoin from "url-join";
 import { config } from "@/config";
-// import { wisp } from "@/lib/wisp";
-
-import result from '../tags.json'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // const result = await wisp.getTags();
+  const result = await (await axios.get(`${process.env.API_HOST}/api/tags`)).data.data;
+
   return [
     {
       url: urlJoin(config.baseUrl, "tag"),
       lastModified: new Date(),
       priority: 0.8,
     },
-    ...result.tags.map((tag) => {
+    ...result((tag: { name: string; }) => {
       return {
         url: urlJoin(config.baseUrl, "tag", tag.name),
         lastModified: new Date(),
